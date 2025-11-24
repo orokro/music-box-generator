@@ -5,7 +5,9 @@
 	Main Layout
 -->
 <template>
+
 	<div class="app-layout">
+
 		<!-- HEADER -->
 		<header class="main-header">
 			<h1>Music Box Drum Generator</h1>
@@ -47,8 +49,9 @@
 					</label>
 				</div>
 
-				<TresCanvas window-size clear-color="#333" shadows>
-					<TresPerspectiveCamera :position="[5, 5, 5]" :look-at="[0, 0, 0]" />
+				<!-- FIXED: Removed 'window-size' so it respects the parent div size -->
+				<TresCanvas clear-color="#333" shadows class="tres-canvas-responsive">
+					<TresPerspectiveCamera :position="[10, 10, 10]" :look-at="[0, 0, 0]" />
 					<OrbitControls />
 
 					<TresAmbientLight :intensity="0.5" />
@@ -67,6 +70,7 @@
 			</div>
 		</main>
 	</div>
+
 </template>
 
 <script setup>
@@ -129,6 +133,7 @@ const loadProject = (event) => {
 		align-items: center;
 		justify-content: space-between;
 		padding: 0 20px;
+		flex-shrink: 0; /* Prevent header from shrinking */
 
 		h1 { font-size: 1.2rem; margin: 0; color: #ff9800; }
 
@@ -167,13 +172,15 @@ const loadProject = (event) => {
 		flex: 1;
 		display: flex;
 		overflow: hidden;
+		position: relative; /* Ensure children position correctly */
 	}
 
 	.viewport-panel {
-		flex: 0 0 400px; /* Fixed width as requested for the viewport area roughly, or 50% */
-		width: 40%; // Let's make it proportional but constrained
+		flex: 0 0 40%;
 		border-right: 1px solid #333;
 		position: relative;
+		display: flex; /* Ensure canvas fills this */
+		flex-direction: column;
 
 		.viewport-controls {
 			position: absolute;
@@ -186,8 +193,17 @@ const loadProject = (event) => {
 		}
 	}
 
+	/* Force Tres Canvas to behave */
+	.tres-canvas-responsive {
+		width: 100% !important;
+		height: 100% !important;
+		display: block;
+	}
+
 	.timeline-panel {
 		flex: 1;
-		overflow: hidden; // Timeline component handles scrolling
+		overflow: hidden;
+		position: relative;
+		background: #222; /* Ensure background color covers any gaps */
 	}
 </style>

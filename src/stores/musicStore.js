@@ -1,7 +1,18 @@
+/*
+	musicStore.js
+	-------------
+
+	This Pinia store manages the state for a music box application, including:
+	- drum configuration
+	- note placement
+	- and project I/O operations.
+*/
+
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import { saveAs } from 'file-saver';
+
 
 export const useMusicStore = defineStore('musicBox', () => {
 
