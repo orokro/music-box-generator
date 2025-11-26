@@ -6,3 +6,16 @@
 
 	Global Styles
 */
+
+/* Global Reset */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: sans-serif;
+	background: #1a1a1a;
+	color: white;
+	overflow: hidden;
+}
