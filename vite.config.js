@@ -14,6 +14,9 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
+			'@stores': path.resolve(__dirname, './src/stores'),
+			'@composables': path.resolve(__dirname, './src/composables'),
+			'@components': path.resolve(__dirname, './src/components'),
 		},
 	},
 	// CRITICAL FIX: Force Vite to pre-bundle these dependencies.

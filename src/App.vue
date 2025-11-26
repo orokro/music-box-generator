@@ -8,31 +8,10 @@
 
 	<div class="app-layout">
 
-		<!-- HEADER -->
-		<header class="main-header">
-			<h1>Music Box Drum Generator</h1>
-
-			<div class="controls">
-				<div class="playback-controls">
-					<button @click="togglePlay">
-						{{ store.isPlaying ? 'Stop' : 'Play' }}
-					</button>
-					<label>
-						Tempo:
-						<input type="number" v-model.number="store.drumSettings.tempo" min="40" max="240">
-					</label>
-				</div>
-
-				<div class="file-controls">
-					<button @click="triggerDownloadObj">Download .OBJ</button>
-					<button @click="saveProject">Save Project</button>
-					<label class="upload-btn">
-						Open Project
-						<input type="file" @change="loadProject" accept=".json">
-					</label>
-				</div>
-			</div>
-		</header>
+		<!-- our Header Bar w/ Controls -->
+		<Header
+			@download-obj="triggerDownloadObj"
+		/>
 
 		<!-- MAIN CONTENT -->
 		<main class="content-split">
@@ -74,28 +53,23 @@
 </template>
 
 <script setup>
+
 // vue imports
 import { ref } from 'vue';
 import { useMusicStore } from './stores/musicStore';
-import { useAudio } from './composables/useAudio';
 import { OrbitControls } from '@tresjs/cientos';
 import { TresCanvas } from '@tresjs/core';
 
 // Components
+import Header from './components/Header.vue';
 import MusicDrum from './components/MusicDrum.vue';
 import NoteTimeline from './components/NoteTimeline.vue';
 
+// get the store
 const store = useMusicStore();
-const audio = useAudio();
-const drumRef = ref(null);
 
-const togglePlay = () => {
-	if (store.isPlaying) {
-		audio.stopPlayback();
-	} else {
-		audio.startPlayback();
-	}
-};
+// reference to the drum component
+const drumRef = ref(null);
 
 const triggerDownloadObj = () => {
 	if (drumRef.value) {
@@ -103,15 +77,6 @@ const triggerDownloadObj = () => {
 	}
 };
 
-const saveProject = () => {
-	const name = prompt("Enter project name:", "MyMusicBox");
-	if (name) store.saveProject(name);
-};
-
-const loadProject = (event) => {
-	const file = event.target.files[0];
-	if (file) store.loadProject(file);
-};
 </script>
 
 <style lang="scss">
@@ -125,48 +90,7 @@ const loadProject = (event) => {
 		height: 100vh;
 	}
 
-	.main-header {
-		height: 60px;
-		background: #111;
-		border-bottom: 1px solid #333;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 20px;
-		flex-shrink: 0; /* Prevent header from shrinking */
 
-		h1 { font-size: 1.2rem; margin: 0; color: #ff9800; }
-
-		.controls {
-			display: flex;
-			gap: 20px;
-
-			button {
-				background: #333;
-				border: 1px solid #555;
-				color: white;
-				padding: 5px 10px;
-				cursor: pointer;
-				&:hover { background: #444; }
-			}
-
-			.playback-controls, .file-controls {
-				display: flex;
-				gap: 10px;
-				align-items: center;
-			}
-
-			.upload-btn {
-				background: #333;
-				border: 1px solid #555;
-				padding: 5px 10px;
-				cursor: pointer;
-				font-size: 0.8rem;
-				&:hover { background: #444; }
-				input { display: none; }
-			}
-		}
-	}
 
 	.content-split {
 		flex: 1;
