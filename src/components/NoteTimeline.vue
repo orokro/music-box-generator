@@ -5,7 +5,9 @@
 	2D Grid for placing notes.
 -->
 <template>
+
 	<div class="timeline-container">
+
 		<div class="timeline-header">
 			<div class="row-labels">
 				<!-- Empty corner -->
@@ -30,7 +32,7 @@
 			>
 				<!-- Note Label -->
 				<div class="row-label">
-					<select disabled>
+					<select>
 						<option selected>{{ row.label }}</option>
 					</select>
 				</div>
@@ -52,9 +54,10 @@
 			</div>
 		</div>
 	</div>
-</template>
 
+</template>
 <script setup>
+
 // vue imports
 import { ref } from 'vue';
 import { useMusicStore } from '../stores/musicStore';
