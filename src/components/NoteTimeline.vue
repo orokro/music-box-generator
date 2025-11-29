@@ -62,16 +62,35 @@
 import { ref } from 'vue';
 import { useMusicStore } from '../stores/musicStore';
 
+// get our music store
 const store = useMusicStore();
+
+// true when user is dragging to add notes
 const isDragging = ref(false);
 
+
+/**
+ * Check if a note is active at the given row and step indices
+ *
+ * @param rIndex - row index
+ * @param sIndex - step index
+ * @return boolean - true if note is active, false otherwise
+ */
 const isNoteActive = (rIndex, sIndex) => {
 	return store.placedNotes.some(
 		n => n.rowIndex === rIndex && n.stepIndex === sIndex
 	);
 };
 
+
+/**
+ * Handle cell click to toggle note
+ *
+ * @param rIndex - row index
+ * @param sIndex - step index
+ */
 const handleCellClick = (rIndex, sIndex) => {
+
 	isDragging.value = true;
 	store.toggleNote(rIndex, sIndex);
 
@@ -81,6 +100,13 @@ const handleCellClick = (rIndex, sIndex) => {
 	}, { once: true });
 };
 
+
+/**
+ * Handle drag over cells to add notes
+ *
+ * @param rIndex - row index
+ * @param sIndex - step index
+ */
 const handleDrag = (rIndex, sIndex) => {
 	if (isDragging.value) {
 		// Only add, don't toggle (remove) during drag to prevent flickering
@@ -90,13 +116,15 @@ const handleDrag = (rIndex, sIndex) => {
 		}
 	}
 };
-</script>
 
+</script>
 <style lang="scss" scoped>
+
 	$cell-size: 25px;
 	$label-width: 80px;
 
 	.timeline-container {
+
 		display: flex;
 		flex-direction: column;
 		background: #222;
@@ -115,16 +143,19 @@ const handleDrag = (rIndex, sIndex) => {
 			background: #555;
 			border-radius: 4px;
 		}
-	}
+
+	}// .timeline-container
 
 	.timeline-header {
+
 		display: flex;
 		margin-bottom: 5px;
 
 		.row-labels {
 			width: $label-width;
 			flex-shrink: 0;
-		}
+
+		}// .row-labels
 
 		.step-markers {
 			display: flex;
@@ -140,18 +171,23 @@ const handleDrag = (rIndex, sIndex) => {
 					background-color: #ff9800;
 					color: #000;
 				}
-			}
-		}
-	}
+
+			}// .step-marker
+
+		}// .step-markers
+
+	}// .timeline-header
 
 	.timeline-row {
+
 		display: flex;
 		height: $cell-size;
 		border-bottom: 1px solid #333;
 
 		&:nth-child(odd) {
 			background: rgba(255, 255, 255, 0.02);
-		}
+
+		}// :nth-child(odd)
 
 		.row-label {
 			width: $label-width;
@@ -167,8 +203,9 @@ const handleDrag = (rIndex, sIndex) => {
 				border: none;
 				font-size: 0.8rem;
 				width: 90%;
-			}
-		}
+			}// select
+
+		}// .row-label
 
 		.row-cells {
 			display: flex;
@@ -182,12 +219,14 @@ const handleDrag = (rIndex, sIndex) => {
 
 				&:hover {
 					background: #444;
-				}
+
+				}// :hover
 
 				&.filled {
 					background: #4caf50;
 					box-shadow: inset 0 0 0 1px #2e7d32;
-				}
+
+				}// .filled
 
 				&.playing {
 					background: rgba(255, 152, 0, 0.3);
@@ -195,8 +234,12 @@ const handleDrag = (rIndex, sIndex) => {
 					&.filled {
 						background: #ffeb3b; // Highlight filled note being played
 					}
-				}
-			}
-		}
-	}
+				}// .playing
+
+			}// .cell
+
+		}// .row-cells
+
+	}// .timeline-row
+
 </style>
