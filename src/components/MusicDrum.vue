@@ -60,9 +60,11 @@
 		</TresGroup>
 
 	</TresGroup>
-</template>
 
+</template>
 <script setup>
+
+
 // vue imports
 import { computed, ref, watch } from 'vue';
 import { useMusicStore } from '../stores/musicStore';
@@ -80,8 +82,13 @@ const radius = computed(() => settings.value.diameter / 2);
 // Expose the group for the parent to trigger export
 const drumGroupRef = ref(null);
 
+
+// --- Export Functionality ---
 defineExpose({
+
+	// Trigger OBJ download
 	downloadObj: () => {
+
 		if (!drumGroupRef.value) return;
 		const exporter = new OBJExporter();
 		const result = exporter.parse(drumGroupRef.value);
@@ -89,6 +96,7 @@ defineExpose({
 		saveAs(blob, 'music-box-drum.obj');
 	}
 });
+
 
 // --- Calculations ---
 
@@ -118,6 +126,13 @@ const calculatePegPosition = (rowIndex, stepIndex) => {
 	return [x, y, z];
 };
 
+
+/**
+ * Calculate the rotation for a peg at the given step index
+ *
+ * @param stepIndex - step index
+ * @return array - [rotX, rotY, rotZ] in radians
+ */
 const calculatePegRotation = (stepIndex) => {
 	const angleStep = (Math.PI * 2) / store.totalSteps;
 	const angle = stepIndex * angleStep;
@@ -130,7 +145,8 @@ const calculatePegRotation = (stepIndex) => {
 };
 
 </script>
-
 <style lang="scss" scoped>
+
 	// No CSS needed for 3D component
+
 </style>
